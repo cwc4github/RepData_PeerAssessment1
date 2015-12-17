@@ -22,7 +22,7 @@ head(activity)
 ## 6    NA 2012-10-01       25
 ```
 
-2. Process/transform the data (if necessary) into a format suitable for your analysis
+2. Process/transform the data (if necessary) into a format suitable for the analysis. (Change the format in the "date" column)
 
 ```r
 activity$date <- as.Date(activity$date, "%Y-%m-%d")
@@ -118,11 +118,10 @@ activity_filled$steps <- fillNum
 4. (a) Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
 
 ```r
-timeSeries_filled <- tapply(activity_filled$steps, activity_filled$interval, mean, na.rm = TRUE)
-plot(row.names(timeSeries_filled), timeSeries_filled, type = "l", xlab = "5-min interval", 
-     ylab = "Average across all days", 
-     main = "Average number of steps taken per 5 minutes (with filling all NAs)", 
-     col = "red")
+stepsPerDay_filled <- aggregate(steps ~ date, data = activity_filled, sum, na.rm = TRUE)
+hist(stepsPerDay_filled$steps, 
+     main = "Histogram of total steps per day (with filled-in missing values)", 
+     xlab = "Total steps per day", col = "red", nclass = 10)
 ```
 
 ![](figure/unnamed-chunk-11-1.png) 
@@ -130,7 +129,6 @@ plot(row.names(timeSeries_filled), timeSeries_filled, type = "l", xlab = "5-min 
 4. (b) Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 ```r
-stepsPerDay_filled <- aggregate(steps ~ date, data = activity_filled, sum, na.rm = TRUE)
 stepsPerDayMean_filled <- mean(stepsPerDay_filled$steps)
 stepsPerDayMedian_filled <- median(stepsPerDay_filled$steps)
 ```
